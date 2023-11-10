@@ -37,27 +37,29 @@ export var currentCountry: { language: string; country: string };
 
 test.describe("Example test suite", () => {
   for (const country of countries) {
-    test.use({
-      locale: `${country.language}-${country.country}`,
-      countryOption: { language: country.language, country: country.country },
-    });
-    test(`get started link for ${country.language}-${country.country}`, async ({
-      page,
-      myPage,
-    }) => {
-      currentCountry = country;
-      console.log(`Testing ${country.language}-${country.country}`);
-      myPage.verifyLocale();
+    test.describe(() => {
+      test.use({
+        locale: `${country.language}-${country.country}`,
+        countryOption: { language: country.language, country: country.country },
+      });
+      test(`get started link for ${country.language}-${country.country}`, async ({
+        page,
+        myPage,
+      }) => {
+        currentCountry = country;
+        console.log(`Testing ${country.language}-${country.country}`);
+        myPage.verifyLocale();
 
-      await page.goto("https://playwright.dev/");
+        await page.goto("https://playwright.dev/");
 
-      // Click the get started link.
-      await page.getByRole("link", { name: "Get started" }).click();
+        // Click the get started link.
+        await page.getByRole("link", { name: "Get started" }).click();
 
-      // Expects page to have a heading with the name of Installation.
-      await expect(
-        page.getByRole("heading", { name: "Installation" })
-      ).toBeVisible();
+        // Expects page to have a heading with the name of Installation.
+        await expect(
+          page.getByRole("heading", { name: "Installation" })
+        ).toBeVisible();
+      });
     });
   }
 });
